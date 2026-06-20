@@ -109,7 +109,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 <div class="wrap">
   <div class="hdr">
     <div><span class="hdr-title">My tasks</span><span class="hdr-sub" id="sv"></span></div>
-    <button class="btn-add" id="btn-add">
+    <button class="btn-add" data-act="add">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
       Add task
     </button>
@@ -212,8 +212,8 @@ function renderForm(){
         +'<div><label class="flabel">Note</label><input type="text" id="f-note" placeholder="Optional"></div>'
       +'</div>'
       +'<div class="faction">'
-        +'<button class="btn btn-g" id="f-cancel">Cancel</button>'
-        +'<button class="btn btn-p" id="f-submit">Add</button>'
+        +'<button class="btn btn-g" data-act="cancel">Cancel</button>'
+        +'<button class="btn btn-p" data-act="submit">Add</button>'
       +'</div>'
     +'</div>';
     var t = document.getElementById("f-ttl");
@@ -334,7 +334,7 @@ function renderDone(){
     });
   }
   el.innerHTML = '<div class="done-sec">'
-    +'<button class="done-tog" id="done-tog">'+arrow+' Completed ('+done.length+')</button>'
+    +'<button class="done-tog" data-act="done-tog">'+arrow+' Completed ('+done.length+')</button>'
     +list
   +'</div>';
 }
@@ -352,10 +352,8 @@ document.addEventListener("click", function(e){
   if(idx !== null){
     activeIdx = parseInt(idx); showForm=false; editId=null; movingId=null; deletingId=null; render(); return;
   }
-  // Add button
-  if(el.id==="btn-add"){ showForm=true; editId=null; movingId=null; deletingId=null; render(); return; }
-  // Done toggle
-  if(el.id==="done-tog"){ showDone=!showDone; renderDone(); return; }
+  if(act==="add"){ showForm=true; editId=null; movingId=null; deletingId=null; render(); return; }
+  if(act==="done-tog"){ showDone=!showDone; renderDone(); return; }
 
   if(act==="cancel"){ showForm=false; render(); return; }
   if(act==="submit"){ doAdd(); return; }
