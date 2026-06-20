@@ -10,6 +10,8 @@
 <meta name="theme-color" content="#E07055">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+/* SVGs inside buttons must not capture clicks */
+button svg, button svg *{ pointer-events:none; }
 :root{
   --tc:#E07055;--tc-dk:#993C1D;
   --bg:#f5f4f2;--surface:#fff;
@@ -21,15 +23,11 @@
 }
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;font-size:15px}
 .wrap{max-width:680px;margin:0 auto;padding:20px 14px 100px}
-
-/* Header */
 .hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
 .hdr-title{font-size:20px;font-weight:600}
 .hdr-sub{font-size:11px;color:var(--tx3);margin-left:8px;font-weight:400}
-.btn-add{background:var(--tc);color:#fff;border:none;border-radius:var(--r2);padding:10px 18px;font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px;min-height:44px}
+.btn-add{background:var(--tc);color:#fff;border:none;border-radius:var(--r2);padding:10px 18px;font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px;min-height:44px;font-family:inherit}
 .btn-add:active{background:var(--tc-dk)}
-
-/* Tabs */
 .tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:10px;margin-bottom:16px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
 .tab{flex-shrink:0;padding:8px 14px;border-radius:99px;font-size:13px;cursor:pointer;border:1px solid var(--bd2);background:transparent;color:var(--tx2);font-weight:400;display:flex;align-items:center;gap:5px;white-space:nowrap;min-height:38px;font-family:inherit}
@@ -37,8 +35,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .cnt{border-radius:99px;font-size:11px;padding:1px 7px}
 .tab.on .cnt{background:rgba(255,255,255,0.25);color:#fff}
 .tab:not(.on) .cnt{background:#e8e5e0;color:var(--tx2)}
-
-/* Form card */
 .fcard{background:var(--surface);border:1px solid var(--bd2);border-radius:var(--r);padding:16px;margin-bottom:14px}
 .fcard-title{font-size:13px;font-weight:500;color:var(--tx2);margin-bottom:10px}
 .flabel{font-size:12px;color:var(--tx2);display:block;margin-bottom:4px}
@@ -53,12 +49,10 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 .btn-p:active{background:var(--tc-dk)}
 .btn-g{background:transparent;color:var(--tx2);border:1px solid var(--bd2)}
 .btn-g:active{background:var(--bg)}
-
-/* Task card */
 .tcard{background:var(--surface);border:1px solid var(--bd);border-radius:var(--r);padding:13px 14px;margin-bottom:8px}
 .tmain{display:flex;align-items:flex-start;gap:8px}
-.tarrows{display:flex;flex-direction:column;flex-shrink:0;gap:0}
-.arw{background:none;border:none;cursor:pointer;padding:3px 5px;color:var(--tx3);font-size:14px;line-height:1;min-width:28px;min-height:22px;display:flex;align-items:center;justify-content:center}
+.tarrows{display:flex;flex-direction:column;flex-shrink:0}
+.arw{background:none;border:none;cursor:pointer;padding:3px 5px;color:var(--tx3);font-size:14px;line-height:1;min-width:28px;min-height:22px;display:flex;align-items:center;justify-content:center;font-family:inherit}
 .arw:active{color:var(--tx)}
 .arw.dim{opacity:0.2;pointer-events:none}
 .tchk{margin-top:5px;width:17px;height:17px;accent-color:var(--tc);flex-shrink:0;cursor:pointer}
@@ -67,49 +61,33 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 .tmeta{display:flex;align-items:center;gap:7px;margin-top:5px;flex-wrap:wrap}
 .mitem{font-size:12px;color:var(--tx2);display:flex;align-items:center;gap:3px}
 .mitem.ov{color:var(--ov);background:var(--ov-bg);padding:2px 8px;border-radius:99px}
-.calbadge{font-size:11px;color:var(--grn);display:flex;align-items:center;gap:3px}
+.calbadge{font-size:11px;color:var(--grn)}
 .tact{display:flex;align-items:center;gap:2px;flex-shrink:0}
-.ibt{background:none;border:none;cursor:pointer;padding:6px;border-radius:var(--r2);color:var(--tx3);display:flex;align-items:center;min-width:34px;min-height:34px;justify-content:center}
+.ibt{background:none;border:none;cursor:pointer;padding:6px;border-radius:var(--r2);color:var(--tx3);display:flex;align-items:center;min-width:34px;min-height:34px;justify-content:center;font-family:inherit;font-size:13px}
 .ibt:active{background:var(--bg);color:var(--tx)}
-.ibt.red:active{color:var(--red)}
 .ibt.grn{color:var(--grn)}
 .ibt.on{color:var(--tc)}
-
-/* Move row */
 .mrow{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--bd);flex-wrap:wrap}
 .mrow select{flex:1;min-width:120px}
 .mlbl{font-size:12px;color:var(--tx2);flex-shrink:0}
-
-/* Delete confirm */
 .del-confirm{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--bd)}
 .del-msg{font-size:13px;color:var(--red);flex:1}
 .btn-del{background:var(--red);color:#fff;border:none;border-radius:var(--r2);padding:8px 14px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit}
 .btn-cancel-del{background:transparent;color:var(--tx2);border:1px solid var(--bd2);border-radius:var(--r2);padding:8px 14px;font-size:13px;cursor:pointer;font-family:inherit}
-
-/* Empty */
 .empty{text-align:center;padding:48px 0;color:var(--tx3);font-size:14px}
-.empty-ico{font-size:32px;margin-bottom:10px}
-
-/* Completed */
 .done-sec{margin-top:24px;border-top:1px solid var(--bd);padding-top:16px}
 .done-tog{background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:6px;color:var(--tx2);font-size:13px;font-weight:500;padding:0;font-family:inherit;min-height:36px}
-.done-tog:active{color:var(--tx)}
 .dcard{background:#f9f8f6;border:1px solid var(--bd);border-radius:var(--r2);padding:10px 12px;margin-bottom:6px;display:flex;align-items:center;gap:8px;margin-top:10px}
 .dtitle{font-size:13px;text-decoration:line-through;color:var(--tx3);flex:1;word-break:break-word}
 .dhead{font-size:11px;color:var(--tx3);background:var(--surface);border:1px solid var(--bd);border-radius:99px;padding:2px 8px;flex-shrink:0;white-space:nowrap}
-
-@media(max-width:420px){
-  .frow{grid-template-columns:1fr}
-  .hdr-title{font-size:18px}
-  .tact{gap:0}
-}
+@media(max-width:420px){.frow{grid-template-columns:1fr}.hdr-title{font-size:18px}.tact{gap:0}}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="hdr">
     <div><span class="hdr-title">My tasks</span><span class="hdr-sub" id="sv"></span></div>
-    <button class="btn-add" data-act="add">
+    <button class="btn-add" id="btn-add">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
       Add task
     </button>
@@ -119,350 +97,306 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
   <div id="task-list"></div>
   <div id="done-area"></div>
 </div>
-
 <script>
 (function(){
-// ── Data ──
-var HEADS = ["Today","Tasks","Think","Learn","Body","Soul"];
-var KEY = "vinay-tasks-v3";
-var tasks = [];
-var activeIdx = 0;
-var showForm = false;
-var editId = null;
-var movingId = null;
-var deletingId = null;
-var showDone = false;
+var HEADS=["Today","Tasks","Think","Learn","Body","Soul"];
+var KEY="vinay-tasks-v3";
+var tasks=[];
+var activeIdx=0;
+var showForm=false;
+var editId=null;
+var movingId=null;
+var deletingId=null;
+var showDone=false;
 
-try{ var s = localStorage.getItem(KEY); if(s) tasks = JSON.parse(s); }catch(e){}
+try{var s=localStorage.getItem(KEY);if(s)tasks=JSON.parse(s);}catch(e){}
 
 function save(){
-  try{ localStorage.setItem(KEY, JSON.stringify(tasks)); }catch(e){}
-  var el = document.getElementById("sv");
-  if(el){ el.textContent = "saved"; setTimeout(function(){ el.textContent=""; },1500); }
+  try{localStorage.setItem(KEY,JSON.stringify(tasks));}catch(e){}
+  var el=document.getElementById("sv");
+  if(el){el.textContent="saved";setTimeout(function(){el.textContent="";},1500);}
 }
 
-function activeHead(){ return HEADS[activeIdx]; }
+function AH(){return HEADS[activeIdx];}
 
-function listFor(head){
-  return tasks.filter(function(t){ return t.head===head && !t.done; })
-              .sort(function(a,b){ return a.order - b.order; });
+function listFor(h){
+  return tasks.filter(function(t){return t.head===h&&!t.done;})
+              .sort(function(a,b){return a.order-b.order;});
 }
 
-function nextOrder(head){
-  var l = listFor(head);
-  if(!l.length) return 1;
-  var max = 0;
-  l.forEach(function(t){ if(t.order>max) max=t.order; });
-  return max+1;
+function nextOrd(h){
+  var l=listFor(h),mx=0;
+  l.forEach(function(t){if(t.order>mx)mx=t.order;});
+  return mx+1;
 }
 
 function fmtDate(iso){
-  if(!iso) return "";
-  var d = new Date(iso+"T00:00:00");
+  if(!iso)return"";
+  var d=new Date(iso+"T00:00:00");
   return d.toLocaleDateString("en-IN",{day:"numeric",month:"short"});
 }
 
-function isOverdue(due,done){
-  if(!due||done) return false;
-  return new Date(due+"T00:00:00") < new Date(new Date().toDateString());
+function isOv(due,done){
+  if(!due||done)return false;
+  return new Date(due+"T00:00:00")<new Date(new Date().toDateString());
 }
 
-function esc(str){
-  return String(str||"")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#39;");
+function esc(s){
+  return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");
 }
 
-function gcalUrl(task){
-  var d = task.due.replace(/-/g,"");
-  var dt = new Date(task.due+"T00:00:00");
-  dt.setDate(dt.getDate()+1);
-  var dEnd = dt.toISOString().slice(0,10).replace(/-/g,"");
-  return "https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent(task.title)+"&dates="+d+"/"+dEnd+(task.note?"&details="+encodeURIComponent(task.note):"");
+function gcalUrl(t){
+  var d=t.due.replace(/-/g,"");
+  var dt=new Date(t.due+"T00:00:00");dt.setDate(dt.getDate()+1);
+  var d2=dt.toISOString().slice(0,10).replace(/-/g,"");
+  return"https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent(t.title)+"&dates="+d+"/"+d2+(t.note?"&details="+encodeURIComponent(t.note):"");
 }
 
 // ── Render ──
-function render(){ renderTabs(); renderForm(); renderList(); renderDone(); }
+function render(){renderTabs();renderForm();renderList();renderDone();}
 
 function renderTabs(){
-  var el = document.getElementById("tabs");
-  var html = "";
+  var el=document.getElementById("tabs"),h="";
   for(var i=0;i<HEADS.length;i++){
-    var h = HEADS[i];
-    var cnt = listFor(h).length;
-    var on = i===activeIdx ? "on" : "";
-    var badge = cnt>0 ? '<span class="cnt">'+cnt+'</span>' : "";
-    html += '<button class="tab '+on+'" data-idx="'+i+'">'+esc(h)+badge+'</button>';
+    var cnt=listFor(HEADS[i]).length;
+    h+='<button class="tab'+(i===activeIdx?" on":"")+'" data-idx="'+i+'">'+esc(HEADS[i])+(cnt>0?'<span class="cnt">'+cnt+'</span>':"")+' </button>';
   }
-  el.innerHTML = html;
+  el.innerHTML=h;
 }
 
 function renderForm(){
-  var el = document.getElementById("form-area");
-  if(!showForm && !editId){ el.innerHTML=""; return; }
-  if(showForm && !editId){
-    el.innerHTML = '<div class="fcard">'
-      +'<p class="fcard-title">Add to '+esc(activeHead())+'</p>'
+  var el=document.getElementById("form-area");
+  if(!showForm&&!editId){el.innerHTML="";return;}
+  if(showForm&&!editId){
+    el.innerHTML='<div class="fcard">'
+      +'<p class="fcard-title">Add to '+esc(AH())+'</p>'
       +'<input type="text" id="f-ttl" placeholder="Task title">'
       +'<div class="frow">'
         +'<div><label class="flabel">Due date</label><input type="date" id="f-due"></div>'
         +'<div><label class="flabel">Note</label><input type="text" id="f-note" placeholder="Optional"></div>'
       +'</div>'
       +'<div class="faction">'
-        +'<button class="btn btn-g" data-act="cancel">Cancel</button>'
-        +'<button class="btn btn-p" data-act="submit">Add</button>'
+        +'<button class="btn btn-g" id="fc">Cancel</button>'
+        +'<button class="btn btn-p" id="fs">Add</button>'
       +'</div>'
     +'</div>';
-    var t = document.getElementById("f-ttl");
-    if(t) setTimeout(function(){ t.focus(); },100);
+    var t=document.getElementById("f-ttl");if(t)setTimeout(function(){t.focus();},80);
+    document.getElementById("fc").onclick=function(){showForm=false;render();};
+    document.getElementById("fs").onclick=doAdd;
   }
 }
 
 function renderList(){
-  var el = document.getElementById("task-list");
-  var list = listFor(activeHead());
-  if(!list.length){
-    el.innerHTML = '<div class="empty"><div class="empty-ico">📋</div>No tasks under '+esc(activeHead())+'</div>';
-    return;
-  }
-  var html = "";
+  var el=document.getElementById("task-list");
+  var list=listFor(AH());
+  if(!list.length){el.innerHTML='<div class="empty">📋<br><br>No tasks under '+esc(AH())+'</div>';return;}
+  var h="";
   for(var i=0;i<list.length;i++){
-    var t = list[i];
-    var ov = isOverdue(t.due, t.done);
-    var isEdit = editId===t.id;
-    var isMove = movingId===t.id;
-    var isDel = deletingId===t.id;
-    var first = i===0;
-    var last = i===list.length-1;
-
+    var t=list[i],ov=isOv(t.due,t.done);
+    var first=(i===0),last=(i===list.length-1);
+    var isEdit=(editId===t.id),isMove=(movingId===t.id),isDel=(deletingId===t.id);
     if(isEdit){
-      html += '<div class="tcard" data-id="'+t.id+'">'
+      h+='<div class="tcard" id="card-'+t.id+'">'
         +'<input type="text" id="e-ttl" value="'+esc(t.title)+'" style="margin-bottom:8px">'
         +'<div class="frow">'
           +'<div><label class="flabel">Due date</label><input type="date" id="e-due" value="'+(t.due||"")+'"></div>'
-          +'<div><label class="flabel">Note</label><input type="text" id="e-note" value="'+esc(t.note||'')+'" placeholder="Optional"></div>'
+          +'<div><label class="flabel">Note</label><input type="text" id="e-note" value="'+esc(t.note||"")+'" placeholder="Optional"></div>'
         +'</div>'
         +'<div class="faction" style="margin-top:12px">'
-          +'<button class="btn btn-g" data-act="cancel-edit">Cancel</button>'
-          +'<button class="btn btn-p" data-act="save-edit" data-id="'+t.id+'">Save</button>'
+          +'<button class="btn btn-g" id="ec">Cancel</button>'
+          +'<button class="btn btn-p" id="es">Save</button>'
         +'</div>'
       +'</div>';
       continue;
     }
-
-    var calBtn = "";
+    var calBtn="";
     if(t.due){
-      if(t.calPushed){
-        calBtn = '<button class="ibt grn" title="Added to calendar" data-act="cal-done"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></button>';
-      } else {
-        calBtn = '<button class="ibt" title="Add to Google Calendar" data-act="push-cal" data-id="'+t.id+'"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="12" y1="14" x2="12" y2="18"/><line x1="10" y1="16" x2="14" y2="16"/></svg></button>';
-      }
+      calBtn=t.calPushed
+        ?'<button class="ibt grn" id="cal-'+t.id+'" title="Added">&#10003;</button>'
+        :'<button class="ibt" id="cal-'+t.id+'" title="Add to Google Calendar">&#128197;</button>';
     }
-
-    var dueMeta = "";
-    if(t.due){
-      if(ov) dueMeta = '<span class="mitem ov">Overdue &middot; '+fmtDate(t.due)+'</span>';
-      else dueMeta = '<span class="mitem"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>'+fmtDate(t.due)+'</span>';
-    }
-    var noteMeta = t.note ? '<span class="mitem">'+esc(t.note)+'</span>' : "";
-    var calMeta = t.calPushed ? '<span class="calbadge">&#10003; In calendar</span>' : "";
-
-    var moveRow = "";
+    var dueMeta="";
+    if(t.due)dueMeta=ov?'<span class="mitem ov">Overdue &middot; '+fmtDate(t.due)+'</span>':'<span class="mitem">&#128197; '+fmtDate(t.due)+'</span>';
+    var noteMeta=t.note?'<span class="mitem">'+esc(t.note)+'</span>':"";
+    var calMeta=t.calPushed?'<span class="calbadge">&#10003; In calendar</span>':"";
+    var moveRow="";
     if(isMove){
-      var opts = "";
-      for(var j=0;j<HEADS.length;j++){
-        if(HEADS[j]!==t.head) opts += '<option value="'+j+'">'+esc(HEADS[j])+'</option>';
-      }
-      moveRow = '<div class="mrow"><span class="mlbl">Move to:</span><select id="move-sel-'+t.id+'">'+opts+'</select>'
-        +'<button class="btn btn-p" data-act="confirm-move" data-id="'+t.id+'">Move</button>'
-        +'<button class="btn btn-g" data-act="cancel-move">Cancel</button>'
-        +'</div>';
+      var opts="";
+      for(var j=0;j<HEADS.length;j++){if(HEADS[j]!==t.head)opts+='<option value="'+j+'">'+esc(HEADS[j])+'</option>';}
+      moveRow='<div class="mrow"><span class="mlbl">Move to:</span><select id="msel-'+t.id+'">'+opts+'</select>'
+        +'<button class="btn btn-p" id="mc-'+t.id+'">Move</button>'
+        +'<button class="btn btn-g" id="mx-'+t.id+'">Cancel</button></div>';
     }
-
-    var delRow = "";
-    if(isDel){
-      delRow = '<div class="del-confirm"><span class="del-msg">Delete this task?</span>'
-        +'<button class="btn-cancel-del" data-act="cancel-del">Keep</button>'
-        +'<button class="btn-del" data-act="confirm-del" data-id="'+t.id+'">Delete</button>'
-        +'</div>';
-    }
-
-    html += '<div class="tcard" data-id="'+t.id+'">'
+    var delRow=isDel?'<div class="del-confirm"><span class="del-msg">Delete this task?</span>'
+      +'<button class="btn-cancel-del" id="dk-'+t.id+'">Keep</button>'
+      +'<button class="btn-del" id="dd-'+t.id+'">Delete</button></div>':"";
+    h+='<div class="tcard" id="card-'+t.id+'">'
       +'<div class="tmain">'
         +'<div class="tarrows">'
-          +'<button class="arw'+(first?' dim':'')+'" data-act="up" data-id="'+t.id+'" aria-label="Move up">&#9650;</button>'
-          +'<button class="arw'+(last?' dim':'')+'" data-act="down" data-id="'+t.id+'" aria-label="Move down">&#9660;</button>'
+          +'<button class="arw'+(first?" dim":"")+'" id="up-'+t.id+'">&#9650;</button>'
+          +'<button class="arw'+(last?" dim":"")+'" id="dn-'+t.id+'">&#9660;</button>'
         +'</div>'
-        +'<input type="checkbox" class="tchk" data-act="done" data-id="'+t.id+'" aria-label="Mark done">'
+        +'<input type="checkbox" class="tchk" id="chk-'+t.id+'">'
         +'<div class="tbody">'
           +'<div class="ttitle">'+esc(t.title)+'</div>'
           +'<div class="tmeta">'+dueMeta+noteMeta+calMeta+'</div>'
         +'</div>'
         +'<div class="tact">'
           +calBtn
-          +'<button class="ibt'+(isMove?' on':'')+'" data-act="toggle-move" data-id="'+t.id+'" title="Move to another section"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><polyline points="3 6 1 9 3 12"/><polyline points="21 6 23 9 21 12"/></svg></button>'
-          +'<button class="ibt" data-act="edit" data-id="'+t.id+'" title="Edit"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>'
-          +'<button class="ibt red" data-act="delete" data-id="'+t.id+'" title="Delete"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg></button>'
+          +'<button class="ibt'+(isMove?" on":"")+'" id="mv-'+t.id+'" title="Move">&#8644;</button>'
+          +'<button class="ibt" id="ed-'+t.id+'" title="Edit">&#9998;</button>'
+          +'<button class="ibt" id="dl-'+t.id+'" title="Delete" style="color:var(--red)">&#128465;</button>'
         +'</div>'
       +'</div>'
       +moveRow+delRow
     +'</div>';
   }
-  el.innerHTML = html;
-  // re-focus edit field if editing
-  if(editId){ var ef = document.getElementById("e-ttl"); if(ef) setTimeout(function(){ ef.focus(); },100); }
+  el.innerHTML=h;
+
+  // Bind all task events after render
+  for(var i=0;i<list.length;i++){
+    var t=list[i];
+    bindId("up-"+t.id, function(id){return function(){doUp(id);};}(t.id));
+    bindId("dn-"+t.id, function(id){return function(){doDown(id);};}(t.id));
+    bindId("chk-"+t.id, function(id){return function(){doToggleDone(id);};}(t.id));
+    bindId("mv-"+t.id, function(id){return function(){movingId=(movingId===id?null:id);deletingId=null;render();};}(t.id));
+    bindId("ed-"+t.id, function(id){return function(){editId=id;movingId=null;deletingId=null;showForm=false;render();};}(t.id));
+    bindId("dl-"+t.id, function(id){return function(){deletingId=(deletingId===id?null:id);movingId=null;render();};}(t.id));
+    if(t.due&&!t.calPushed) bindId("cal-"+t.id, function(id){return function(){doPushCal(id);};}(t.id));
+    if(movingId===t.id){
+      bindId("mc-"+t.id, function(id){return function(){doMove(id);};}(t.id));
+      bindId("mx-"+t.id, function(){movingId=null;render();});
+    }
+    if(deletingId===t.id){
+      bindId("dk-"+t.id, function(){deletingId=null;render();});
+      bindId("dd-"+t.id, function(id){return function(){doDelete(id);};}(t.id));
+    }
+    if(editId===t.id){
+      var ef=document.getElementById("e-ttl");
+      if(ef)setTimeout(function(){ef.focus();},80);
+      bindId("ec",function(){editId=null;render();});
+      bindId("es",doSaveEdit);
+    }
+  }
 }
 
 function renderDone(){
-  var done = tasks.filter(function(t){ return t.done; })
-                  .sort(function(a,b){ return new Date(b.doneAt||0)-new Date(a.doneAt||0); });
-  var el = document.getElementById("done-area");
-  if(!done.length){ el.innerHTML=""; return; }
-  var arrow = showDone ? "&#9650;" : "&#9660;";
-  var list = "";
+  var done=tasks.filter(function(t){return t.done;})
+                .sort(function(a,b){return new Date(b.doneAt||0)-new Date(a.doneAt||0);});
+  var el=document.getElementById("done-area");
+  if(!done.length){el.innerHTML="";return;}
+  var arrow=showDone?"&#9650;":"&#9660;";
+  var list="";
   if(showDone){
     done.forEach(function(t){
-      list += '<div class="dcard">'
-        +'<input type="checkbox" checked style="width:15px;height:15px;accent-color:var(--tc);cursor:pointer;flex-shrink:0" data-act="reopen" data-id="'+t.id+'">'
+      list+='<div class="dcard">'
+        +'<input type="checkbox" checked style="width:15px;height:15px;accent-color:var(--tc);cursor:pointer;flex-shrink:0" id="ro-'+t.id+'">'
         +'<span class="dtitle">'+esc(t.title)+'</span>'
         +'<span class="dhead">'+esc(t.head)+'</span>'
-        +'<button class="ibt" data-act="del-done" data-id="'+t.id+'" style="font-size:13px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg></button>'
+        +'<button class="ibt" id="ddd-'+t.id+'" style="color:var(--red)">&#128465;</button>'
       +'</div>';
     });
   }
-  el.innerHTML = '<div class="done-sec">'
-    +'<button class="done-tog" data-act="done-tog">'+arrow+' Completed ('+done.length+')</button>'
-    +list
-  +'</div>';
+  el.innerHTML='<div class="done-sec"><button class="done-tog" id="dtog">'+arrow+' Completed ('+done.length+')</button>'+list+'</div>';
+  bindId("dtog",function(){showDone=!showDone;renderDone();});
+  if(showDone){
+    done.forEach(function(t){
+      bindId("ro-"+t.id,function(id){return function(){doToggleDone(id);};}(t.id));
+      bindId("ddd-"+t.id,function(id){return function(){doDelete(id);};}(t.id));
+    });
+  }
 }
 
-// ── Event delegation ──
-document.addEventListener("click", function(e){
-  var el = e.target.closest("[data-act],[data-idx]");
-  if(!el) return;
-
-  var act = el.getAttribute("data-act");
-  var id  = el.getAttribute("data-id");
-  var idx = el.getAttribute("data-idx");
-
-  // Tab switch
-  if(idx !== null){
-    activeIdx = parseInt(idx); showForm=false; editId=null; movingId=null; deletingId=null; render(); return;
-  }
-  if(act==="add"){ showForm=true; editId=null; movingId=null; deletingId=null; render(); return; }
-  if(act==="done-tog"){ showDone=!showDone; renderDone(); return; }
-
-  if(act==="cancel"){ showForm=false; render(); return; }
-  if(act==="submit"){ doAdd(); return; }
-  if(act==="cancel-edit"){ editId=null; render(); return; }
-  if(act==="save-edit"){ doSaveEdit(); return; }
-  if(act==="done"){ doToggleDone(id); return; }
-  if(act==="reopen"){ doToggleDone(id); return; }
-  if(act==="edit"){ editId=id; movingId=null; deletingId=null; showForm=false; render(); return; }
-  if(act==="delete"){ deletingId=(deletingId===id?null:id); movingId=null; render(); return; }
-  if(act==="cancel-del"){ deletingId=null; render(); return; }
-  if(act==="confirm-del"){ doDelete(id); return; }
-  if(act==="del-done"){ doDelete(id); return; }
-  if(act==="up"){ doUp(id); return; }
-  if(act==="down"){ doDown(id); return; }
-  if(act==="toggle-move"){ movingId=(movingId===id?null:id); deletingId=null; render(); return; }
-  if(act==="cancel-move"){ movingId=null; render(); return; }
-  if(act==="confirm-move"){ doMove(id); return; }
-  if(act==="push-cal"){ doPushCal(id); return; }
-});
-
-// Enter key in form fields
-document.addEventListener("keydown", function(e){
-  if(e.key!=="Enter") return;
-  if(document.getElementById("f-ttl") && e.target.id.indexOf("f-")===0){ doAdd(); return; }
-  if(document.getElementById("e-ttl") && e.target.id.indexOf("e-")===0){ doSaveEdit(); return; }
-});
+function bindId(id,fn){
+  var el=document.getElementById(id);
+  if(el)el.onclick=fn;
+}
 
 // ── Actions ──
 function doAdd(){
-  var ttl = (document.getElementById("f-ttl")||{}).value;
-  if(!ttl||!ttl.trim()) return;
-  var due  = (document.getElementById("f-due")||{}).value || "";
-  var note = ((document.getElementById("f-note")||{}).value||"").trim();
-  tasks.push({ id: Date.now()+"", title:ttl.trim(), due:due, note:note, head:activeHead(), order:nextOrder(activeHead()), done:false, doneAt:null, calPushed:false });
-  save(); showForm=false; render();
+  var ttl=(document.getElementById("f-ttl")||{}).value;
+  if(!ttl||!ttl.trim())return;
+  var due=(document.getElementById("f-due")||{}).value||"";
+  var note=((document.getElementById("f-note")||{}).value||"").trim();
+  tasks.push({id:Date.now()+"",title:ttl.trim(),due:due,note:note,head:AH(),order:nextOrd(AH()),done:false,doneAt:null,calPushed:false});
+  save();showForm=false;render();
 }
 
 function doSaveEdit(){
-  var ttl = (document.getElementById("e-ttl")||{}).value;
-  if(!ttl||!ttl.trim()) return;
-  var due  = (document.getElementById("e-due")||{}).value || "";
-  var note = ((document.getElementById("e-note")||{}).value||"").trim();
-  tasks = tasks.map(function(t){ return t.id===editId ? Object.assign({},t,{title:ttl.trim(),due:due,note:note}) : t; });
-  save(); editId=null; render();
+  var ttl=(document.getElementById("e-ttl")||{}).value;
+  if(!ttl||!ttl.trim())return;
+  var due=(document.getElementById("e-due")||{}).value||"";
+  var note=((document.getElementById("e-note")||{}).value||"").trim();
+  tasks=tasks.map(function(t){return t.id===editId?Object.assign({},t,{title:ttl.trim(),due:due,note:note}):t;});
+  save();editId=null;render();
 }
 
 function doDelete(id){
-  tasks = tasks.filter(function(t){ return t.id!==id; });
-  if(deletingId===id) deletingId=null;
-  save(); render();
+  tasks=tasks.filter(function(t){return t.id!==id;});
+  if(deletingId===id)deletingId=null;
+  save();render();
 }
 
 function doToggleDone(id){
-  tasks = tasks.map(function(t){
-    if(t.id!==id) return t;
-    return Object.assign({},t,{done:!t.done, doneAt:!t.done?new Date().toISOString():null});
+  tasks=tasks.map(function(t){
+    if(t.id!==id)return t;
+    return Object.assign({},t,{done:!t.done,doneAt:!t.done?new Date().toISOString():null});
   });
-  save(); render();
+  save();render();
 }
 
 function doUp(id){
-  var list = listFor(activeHead());
-  var idx = -1;
-  for(var i=0;i<list.length;i++){ if(list[i].id===id){ idx=i; break; } }
-  if(idx<=0) return;
-  var a=list[idx], b=list[idx-1];
-  tasks = tasks.map(function(t){
-    if(t.id===a.id) return Object.assign({},t,{order:b.order});
-    if(t.id===b.id) return Object.assign({},t,{order:a.order});
+  var list=listFor(AH()),idx=-1;
+  for(var i=0;i<list.length;i++){if(list[i].id===id){idx=i;break;}}
+  if(idx<=0)return;
+  var a=list[idx],b=list[idx-1];
+  tasks=tasks.map(function(t){
+    if(t.id===a.id)return Object.assign({},t,{order:b.order});
+    if(t.id===b.id)return Object.assign({},t,{order:a.order});
     return t;
   });
-  save(); render();
+  save();render();
 }
 
 function doDown(id){
-  var list = listFor(activeHead());
-  var idx = -1;
-  for(var i=0;i<list.length;i++){ if(list[i].id===id){ idx=i; break; } }
-  if(idx<0||idx>=list.length-1) return;
-  var a=list[idx], b=list[idx+1];
-  tasks = tasks.map(function(t){
-    if(t.id===a.id) return Object.assign({},t,{order:b.order});
-    if(t.id===b.id) return Object.assign({},t,{order:a.order});
+  var list=listFor(AH()),idx=-1;
+  for(var i=0;i<list.length;i++){if(list[i].id===id){idx=i;break;}}
+  if(idx<0||idx>=list.length-1)return;
+  var a=list[idx],b=list[idx+1];
+  tasks=tasks.map(function(t){
+    if(t.id===a.id)return Object.assign({},t,{order:b.order});
+    if(t.id===b.id)return Object.assign({},t,{order:a.order});
     return t;
   });
-  save(); render();
+  save();render();
 }
 
 function doMove(id){
-  var sel = document.getElementById("move-sel-"+id);
-  if(!sel) return;
-  var destIdx = parseInt(sel.value);
-  var dest = HEADS[destIdx];
-  tasks = tasks.map(function(t){ return t.id===id ? Object.assign({},t,{head:dest,order:nextOrder(dest)}) : t; });
-  save(); movingId=null; render();
+  var sel=document.getElementById("msel-"+id);
+  if(!sel)return;
+  var dest=HEADS[parseInt(sel.value)];
+  tasks=tasks.map(function(t){return t.id===id?Object.assign({},t,{head:dest,order:nextOrd(dest)}):t;});
+  save();movingId=null;render();
 }
 
 function doPushCal(id){
-  var task = null;
-  for(var i=0;i<tasks.length;i++){ if(tasks[i].id===id){ task=tasks[i]; break; } }
-  if(!task||!task.due) return;
+  var task=null;
+  for(var i=0;i<tasks.length;i++){if(tasks[i].id===id){task=tasks[i];break;}}
+  if(!task||!task.due)return;
   window.open(gcalUrl(task),"_blank");
-  tasks = tasks.map(function(t){ return t.id===id ? Object.assign({},t,{calPushed:true}) : t; });
-  save(); render();
+  tasks=tasks.map(function(t){return t.id===id?Object.assign({},t,{calPushed:true}):t;});
+  save();render();
 }
 
-// Init
+// ── Init ──
+document.getElementById("btn-add").onclick=function(){showForm=true;editId=null;movingId=null;deletingId=null;render();};
+document.getElementById("tabs").addEventListener("click",function(e){
+  var btn=e.target;while(btn&&btn.tagName!=="BUTTON")btn=btn.parentElement;
+  if(!btn)return;
+  var idx=btn.getAttribute("data-idx");
+  if(idx!==null){activeIdx=parseInt(idx);showForm=false;editId=null;movingId=null;deletingId=null;render();}
+});
 render();
-
 })();
 </script>
 </body>
