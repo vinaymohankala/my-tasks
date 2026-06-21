@@ -10,8 +10,7 @@
 <meta name="theme-color" content="#E07055">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-/* SVGs inside buttons must not capture clicks */
-button svg, button svg *{ pointer-events:none; }
+button svg,button svg *{pointer-events:none}
 :root{
   --tc:#E07055;--tc-dk:#993C1D;
   --bg:#f5f4f2;--surface:#fff;
@@ -25,7 +24,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .wrap{max-width:680px;margin:0 auto;padding:20px 14px 100px}
 .hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
 .hdr-title{font-size:20px;font-weight:600}
-.hdr-sub{font-size:11px;color:var(--tx3);margin-left:8px;font-weight:400}
+.hdr-right{display:flex;align-items:center;gap:10px}
+.sync-dot{width:8px;height:8px;border-radius:50%;background:#ccc;flex-shrink:0;transition:background 0.3s}
+.sync-dot.ok{background:var(--grn)}
+.sync-dot.err{background:var(--red)}
+.sync-dot.spin{background:var(--tc);animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.hdr-sub{font-size:11px;color:var(--tx3)}
 .btn-add{background:var(--tc);color:#fff;border:none;border-radius:var(--r2);padding:10px 18px;font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px;min-height:44px;font-family:inherit}
 .btn-add:active{background:var(--tc-dk)}
 .tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:10px;margin-bottom:16px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
@@ -45,16 +50,13 @@ input[type=date]{color:var(--tx)}
 input:focus,select:focus{border-color:var(--tc)}
 select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b6660' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;background-size:12px;padding-right:30px}
 .btn{border:none;border-radius:var(--r2);padding:10px 16px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;min-height:42px}
-.btn-p{background:var(--tc);color:#fff}
-.btn-p:active{background:var(--tc-dk)}
-.btn-g{background:transparent;color:var(--tx2);border:1px solid var(--bd2)}
-.btn-g:active{background:var(--bg)}
+.btn-p{background:var(--tc);color:#fff}.btn-p:active{background:var(--tc-dk)}
+.btn-g{background:transparent;color:var(--tx2);border:1px solid var(--bd2)}.btn-g:active{background:var(--bg)}
 .tcard{background:var(--surface);border:1px solid var(--bd);border-radius:var(--r);padding:13px 14px;margin-bottom:8px}
 .tmain{display:flex;align-items:flex-start;gap:8px}
 .tarrows{display:flex;flex-direction:column;flex-shrink:0}
 .arw{background:none;border:none;cursor:pointer;padding:3px 5px;color:var(--tx3);font-size:14px;line-height:1;min-width:28px;min-height:22px;display:flex;align-items:center;justify-content:center;font-family:inherit}
-.arw:active{color:var(--tx)}
-.arw.dim{opacity:0.2;pointer-events:none}
+.arw:active{color:var(--tx)}.arw.dim{opacity:0.2;pointer-events:none}
 .tchk{margin-top:5px;width:17px;height:17px;accent-color:var(--tc);flex-shrink:0;cursor:pointer}
 .tbody{flex:1;min-width:0}
 .ttitle{font-size:14px;font-weight:500;color:var(--tx);line-height:1.4;word-break:break-word}
@@ -64,17 +66,15 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 .calbadge{font-size:11px;color:var(--grn)}
 .tact{display:flex;align-items:center;gap:2px;flex-shrink:0}
 .ibt{background:none;border:none;cursor:pointer;padding:6px;border-radius:var(--r2);color:var(--tx3);display:flex;align-items:center;min-width:34px;min-height:34px;justify-content:center;font-family:inherit;font-size:13px}
-.ibt:active{background:var(--bg);color:var(--tx)}
-.ibt.grn{color:var(--grn)}
-.ibt.on{color:var(--tc)}
+.ibt:active{background:var(--bg);color:var(--tx)}.ibt.grn{color:var(--grn)}.ibt.on{color:var(--tc)}
 .mrow{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--bd);flex-wrap:wrap}
-.mrow select{flex:1;min-width:120px}
-.mlbl{font-size:12px;color:var(--tx2);flex-shrink:0}
+.mrow select{flex:1;min-width:120px}.mlbl{font-size:12px;color:var(--tx2);flex-shrink:0}
 .del-confirm{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--bd)}
 .del-msg{font-size:13px;color:var(--red);flex:1}
 .btn-del{background:var(--red);color:#fff;border:none;border-radius:var(--r2);padding:8px 14px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit}
 .btn-cancel-del{background:transparent;color:var(--tx2);border:1px solid var(--bd2);border-radius:var(--r2);padding:8px 14px;font-size:13px;cursor:pointer;font-family:inherit}
 .empty{text-align:center;padding:48px 0;color:var(--tx3);font-size:14px}
+.loading{text-align:center;padding:48px 0;color:var(--tx3);font-size:14px}
 .done-sec{margin-top:24px;border-top:1px solid var(--bd);padding-top:16px}
 .done-tog{background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:6px;color:var(--tx2);font-size:13px;font-weight:500;padding:0;font-family:inherit;min-height:36px}
 .dcard{background:#f9f8f6;border:1px solid var(--bd);border-radius:var(--r2);padding:10px 12px;margin-bottom:6px;display:flex;align-items:center;gap:8px;margin-top:10px}
@@ -86,21 +86,38 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 <body>
 <div class="wrap">
   <div class="hdr">
-    <div><span class="hdr-title">My tasks</span><span class="hdr-sub" id="sv"></span></div>
-    <button class="btn-add" id="btn-add">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      Add task
-    </button>
+    <span class="hdr-title">My tasks</span>
+    <div class="hdr-right">
+      <span class="hdr-sub" id="sv"></span>
+      <div class="sync-dot" id="sync-dot" title="Sync status"></div>
+      <button class="btn-add" id="btn-add">+ Add task</button>
+    </div>
   </div>
   <div class="tabs" id="tabs"></div>
   <div id="form-area"></div>
   <div id="task-list"></div>
   <div id="done-area"></div>
 </div>
-<script>
-(function(){
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, onValue, set, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyChFaA66--31bWlryd_TbxFjml8Tgw5uhs",
+  authDomain: "my-tasks-1a882.firebaseapp.com",
+  databaseURL: "https://my-tasks-1a882-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "my-tasks-1a882",
+  storageBucket: "my-tasks-1a882.firebasestorage.app",
+  messagingSenderId: "92389398797",
+  appId: "1:92389398797:web:d6d7564a57da7eea823844"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const tasksRef = ref(db, "tasks");
+
 var HEADS=["Today","Tasks","Think","Learn","Body","Soul"];
-var KEY="vinay-tasks-v3";
 var tasks=[];
 var activeIdx=0;
 var showForm=false;
@@ -108,13 +125,38 @@ var editId=null;
 var movingId=null;
 var deletingId=null;
 var showDone=false;
+var loaded=false;
 
-try{var s=localStorage.getItem(KEY);if(s)tasks=JSON.parse(s);}catch(e){}
+function setSyncDot(state){
+  var d=document.getElementById("sync-dot");
+  if(!d)return;
+  d.className="sync-dot"+(state?" "+state:"");
+}
+
+function setSv(msg){
+  var el=document.getElementById("sv");
+  if(el){el.textContent=msg;if(msg)setTimeout(function(){el.textContent="";},2000);}
+}
+
+// Listen for realtime changes from Firebase
+onValue(tasksRef, function(snapshot){
+  var data=snapshot.val();
+  tasks=data?Object.values(data):[];
+  loaded=true;
+  setSyncDot("ok");
+  render();
+}, function(err){
+  setSyncDot("err");
+  setSv("sync error");
+});
 
 function save(){
-  try{localStorage.setItem(KEY,JSON.stringify(tasks));}catch(e){}
-  var el=document.getElementById("sv");
-  if(el){el.textContent="saved";setTimeout(function(){el.textContent="";},1500);}
+  setSyncDot("spin");
+  var obj={};
+  tasks.forEach(function(t){obj[t.id]=t;});
+  set(tasksRef, tasks.length?obj:null)
+    .then(function(){setSyncDot("ok");setSv("saved");})
+    .catch(function(){setSyncDot("err");setSv("save failed");});
 }
 
 function AH(){return HEADS[activeIdx];}
@@ -152,20 +194,26 @@ function gcalUrl(t){
   return"https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent(t.title)+"&dates="+d+"/"+d2+(t.note?"&details="+encodeURIComponent(t.note):"");
 }
 
-// ── Render ──
 function render(){renderTabs();renderForm();renderList();renderDone();}
 
 function renderTabs(){
-  var el=document.getElementById("tabs"),h="";
+  var el=document.getElementById("tabs");if(!el)return;
+  var h="";
   for(var i=0;i<HEADS.length;i++){
     var cnt=listFor(HEADS[i]).length;
     h+='<button class="tab'+(i===activeIdx?" on":"")+'" data-idx="'+i+'">'+esc(HEADS[i])+(cnt>0?'<span class="cnt">'+cnt+'</span>':"")+' </button>';
   }
   el.innerHTML=h;
+  for(var i=0;i<HEADS.length;i++){
+    (function(idx){
+      var btns=el.querySelectorAll(".tab");
+      if(btns[idx])btns[idx].onclick=function(){activeIdx=idx;showForm=false;editId=null;movingId=null;deletingId=null;render();};
+    })(i);
+  }
 }
 
 function renderForm(){
-  var el=document.getElementById("form-area");
+  var el=document.getElementById("form-area");if(!el)return;
   if(!showForm&&!editId){el.innerHTML="";return;}
   if(showForm&&!editId){
     el.innerHTML='<div class="fcard">'
@@ -178,8 +226,7 @@ function renderForm(){
       +'<div class="faction">'
         +'<button class="btn btn-g" id="fc">Cancel</button>'
         +'<button class="btn btn-p" id="fs">Add</button>'
-      +'</div>'
-    +'</div>';
+      +'</div></div>';
     var t=document.getElementById("f-ttl");if(t)setTimeout(function(){t.focus();},80);
     document.getElementById("fc").onclick=function(){showForm=false;render();};
     document.getElementById("fs").onclick=doAdd;
@@ -187,7 +234,8 @@ function renderForm(){
 }
 
 function renderList(){
-  var el=document.getElementById("task-list");
+  var el=document.getElementById("task-list");if(!el)return;
+  if(!loaded){el.innerHTML='<div class="loading">&#8987; Loading…</div>';return;}
   var list=listFor(AH());
   if(!list.length){el.innerHTML='<div class="empty">📋<br><br>No tasks under '+esc(AH())+'</div>';return;}
   var h="";
@@ -205,14 +253,13 @@ function renderList(){
         +'<div class="faction" style="margin-top:12px">'
           +'<button class="btn btn-g" id="ec">Cancel</button>'
           +'<button class="btn btn-p" id="es">Save</button>'
-        +'</div>'
-      +'</div>';
+        +'</div></div>';
       continue;
     }
     var calBtn="";
     if(t.due){
       calBtn=t.calPushed
-        ?'<button class="ibt grn" id="cal-'+t.id+'" title="Added">&#10003;</button>'
+        ?'<button class="ibt grn" id="cal-'+t.id+'">&#10003;</button>'
         :'<button class="ibt" id="cal-'+t.id+'" title="Add to Google Calendar">&#128197;</button>';
     }
     var dueMeta="";
@@ -243,47 +290,45 @@ function renderList(){
         +'</div>'
         +'<div class="tact">'
           +calBtn
-          +'<button class="ibt'+(isMove?" on":"")+'" id="mv-'+t.id+'" title="Move">&#8644;</button>'
-          +'<button class="ibt" id="ed-'+t.id+'" title="Edit">&#9998;</button>'
-          +'<button class="ibt" id="dl-'+t.id+'" title="Delete" style="color:var(--red)">&#128465;</button>'
+          +'<button class="ibt'+(isMove?" on":"")+'" id="mv-'+t.id+'">&#8644;</button>'
+          +'<button class="ibt" id="ed-'+t.id+'">&#9998;</button>'
+          +'<button class="ibt" id="dl-'+t.id+'" style="color:var(--red)">&#128465;</button>'
         +'</div>'
-      +'</div>'
-      +moveRow+delRow
-    +'</div>';
+      +'</div>'+moveRow+delRow+'</div>';
   }
   el.innerHTML=h;
 
-  // Bind all task events after render
   for(var i=0;i<list.length;i++){
-    var t=list[i];
-    bindId("up-"+t.id, function(id){return function(){doUp(id);};}(t.id));
-    bindId("dn-"+t.id, function(id){return function(){doDown(id);};}(t.id));
-    bindId("chk-"+t.id, function(id){return function(){doToggleDone(id);};}(t.id));
-    bindId("mv-"+t.id, function(id){return function(){movingId=(movingId===id?null:id);deletingId=null;render();};}(t.id));
-    bindId("ed-"+t.id, function(id){return function(){editId=id;movingId=null;deletingId=null;showForm=false;render();};}(t.id));
-    bindId("dl-"+t.id, function(id){return function(){deletingId=(deletingId===id?null:id);movingId=null;render();};}(t.id));
-    if(t.due&&!t.calPushed) bindId("cal-"+t.id, function(id){return function(){doPushCal(id);};}(t.id));
-    if(movingId===t.id){
-      bindId("mc-"+t.id, function(id){return function(){doMove(id);};}(t.id));
-      bindId("mx-"+t.id, function(){movingId=null;render();});
-    }
-    if(deletingId===t.id){
-      bindId("dk-"+t.id, function(){deletingId=null;render();});
-      bindId("dd-"+t.id, function(id){return function(){doDelete(id);};}(t.id));
-    }
-    if(editId===t.id){
-      var ef=document.getElementById("e-ttl");
-      if(ef)setTimeout(function(){ef.focus();},80);
-      bindId("ec",function(){editId=null;render();});
-      bindId("es",doSaveEdit);
-    }
+    (function(t,first,last){
+      bindId("up-"+t.id,function(){doUp(t.id);});
+      bindId("dn-"+t.id,function(){doDown(t.id);});
+      bindId("chk-"+t.id,function(){doToggleDone(t.id);});
+      bindId("mv-"+t.id,function(){movingId=(movingId===t.id?null:t.id);deletingId=null;render();});
+      bindId("ed-"+t.id,function(){editId=t.id;movingId=null;deletingId=null;showForm=false;render();});
+      bindId("dl-"+t.id,function(){deletingId=(deletingId===t.id?null:t.id);movingId=null;render();});
+      if(t.due&&!t.calPushed)bindId("cal-"+t.id,function(){doPushCal(t.id);});
+      if(movingId===t.id){
+        bindId("mc-"+t.id,function(){doMove(t.id);});
+        bindId("mx-"+t.id,function(){movingId=null;render();});
+      }
+      if(deletingId===t.id){
+        bindId("dk-"+t.id,function(){deletingId=null;render();});
+        bindId("dd-"+t.id,function(){doDelete(t.id);});
+      }
+    })(list[i],i===0,i===list.length-1);
+  }
+  if(editId){
+    var ef=document.getElementById("e-ttl");
+    if(ef)setTimeout(function(){ef.focus();},80);
+    bindId("ec",function(){editId=null;render();});
+    bindId("es",doSaveEdit);
   }
 }
 
 function renderDone(){
   var done=tasks.filter(function(t){return t.done;})
                 .sort(function(a,b){return new Date(b.doneAt||0)-new Date(a.doneAt||0);});
-  var el=document.getElementById("done-area");
+  var el=document.getElementById("done-area");if(!el)return;
   if(!done.length){el.innerHTML="";return;}
   var arrow=showDone?"&#9650;":"&#9660;";
   var list="";
@@ -301,18 +346,14 @@ function renderDone(){
   bindId("dtog",function(){showDone=!showDone;renderDone();});
   if(showDone){
     done.forEach(function(t){
-      bindId("ro-"+t.id,function(id){return function(){doToggleDone(id);};}(t.id));
-      bindId("ddd-"+t.id,function(id){return function(){doDelete(id);};}(t.id));
+      bindId("ro-"+t.id,function(){doToggleDone(t.id);});
+      bindId("ddd-"+t.id,function(){doDelete(t.id);});
     });
   }
 }
 
-function bindId(id,fn){
-  var el=document.getElementById(id);
-  if(el)el.onclick=fn;
-}
+function bindId(id,fn){var el=document.getElementById(id);if(el)el.onclick=fn;}
 
-// ── Actions ──
 function doAdd(){
   var ttl=(document.getElementById("f-ttl")||{}).value;
   if(!ttl||!ttl.trim())return;
@@ -372,8 +413,7 @@ function doDown(id){
 }
 
 function doMove(id){
-  var sel=document.getElementById("msel-"+id);
-  if(!sel)return;
+  var sel=document.getElementById("msel-"+id);if(!sel)return;
   var dest=HEADS[parseInt(sel.value)];
   tasks=tasks.map(function(t){return t.id===id?Object.assign({},t,{head:dest,order:nextOrd(dest)}):t;});
   save();movingId=null;render();
@@ -388,16 +428,9 @@ function doPushCal(id){
   save();render();
 }
 
-// ── Init ──
 document.getElementById("btn-add").onclick=function(){showForm=true;editId=null;movingId=null;deletingId=null;render();};
-document.getElementById("tabs").addEventListener("click",function(e){
-  var btn=e.target;while(btn&&btn.tagName!=="BUTTON")btn=btn.parentElement;
-  if(!btn)return;
-  var idx=btn.getAttribute("data-idx");
-  if(idx!==null){activeIdx=parseInt(idx);showForm=false;editId=null;movingId=null;deletingId=null;render();}
-});
+setSyncDot("spin");
 render();
-})();
 </script>
 </body>
 </html>
