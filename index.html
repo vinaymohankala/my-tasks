@@ -102,6 +102,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getDatabase, ref, onValue, set, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyChFaA66--31bWlryd_TbxFjml8Tgw5uhs",
@@ -115,6 +116,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
+const auth = getAuth(app);
 const tasksRef = ref(db, "tasks");
 
 var HEADS=["Today","Tasks","Think","Learn","Body","Soul"];
@@ -138,16 +140,27 @@ function setSv(msg){
   if(el){el.textContent=msg;if(msg)setTimeout(function(){el.textContent="";},2000);}
 }
 
-// Listen for realtime changes from Firebase
-onValue(tasksRef, function(snapshot){
-  var data=snapshot.val();
-  tasks=data?Object.values(data):[];
-  loaded=true;
-  setSyncDot("ok");
-  render();
-}, function(err){
+// Sign in anonymously, then start listening for realtime changes from Firebase.
+// This keeps the database locked to auth != null in the security rules while
+// requiring no login screen — every instance of this app (phone/laptop) gets
+// its own silent anonymous session.
+onAuthStateChanged(auth, function(user){
+  if(user){
+    onValue(tasksRef, function(snapshot){
+      var data=snapshot.val();
+      tasks=data?Object.values(data):[];
+      loaded=true;
+      setSyncDot("ok");
+      render();
+    }, function(err){
+      setSyncDot("err");
+      setSv("sync error");
+    });
+  }
+});
+signInAnonymously(auth).catch(function(){
   setSyncDot("err");
-  setSv("sync error");
+  setSv("auth failed");
 });
 
 function save(){
