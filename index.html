@@ -156,12 +156,12 @@ function setSv(msg){
 }
 
 // Google Sign-In: locks the database to your specific Google account.
-// Popup is tried first (works on desktop and most mobile browsers); if it's
-// blocked (common in standalone/PWA contexts) we fall back to a redirect flow.
+// Using redirect (not popup) — popups depend on third-party cookies/iframes
+// on the Firebase authDomain, which Chrome blocks in Incognito and
+// increasingly elsewhere, causing Google's "requested action is invalid"
+// error. Redirect navigates the whole page, avoiding that dependency.
 function doSignIn(){
-  signInWithPopup(auth, provider).catch(function(){
-    signInWithRedirect(auth, provider);
-  });
+  signInWithRedirect(auth, provider);
 }
 
 getRedirectResult(auth).catch(function(err){
