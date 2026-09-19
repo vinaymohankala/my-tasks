@@ -111,12 +111,12 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
   <div id="task-list"></div>
   <div id="done-area"></div>
 </div>
- 
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getDatabase, ref, onValue, set, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
- 
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
 const firebaseConfig = {
   apiKey: "AIzaSyChFaA66--31bWlryd_TbxFjml8Tgw5uhs",
   authDomain: "my-tasks-1a882.firebaseapp.com",
@@ -126,13 +126,13 @@ const firebaseConfig = {
   messagingSenderId: "92389398797",
   appId: "1:92389398797:web:d6d7564a57da7eea823844"
 };
- 
+
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 const tasksRef = ref(db, "tasks");
- 
+
 var HEADS=["Today","Tasks","Think","Learn","Body","Soul"];
 var tasks=[];
 var activeIdx=0;
@@ -143,18 +143,18 @@ var deletingId=null;
 var showDone=false;
 var loaded=false;
 var listening=false;
- 
+
 function setSyncDot(state){
   var d=document.getElementById("sync-dot");
   if(!d)return;
   d.className="sync-dot"+(state?" "+state:"");
 }
- 
+
 function setSv(msg){
   var el=document.getElementById("sv");
   if(el){el.textContent=msg;if(msg)setTimeout(function(){el.textContent="";},2000);}
 }
- 
+
 // Google Sign-In: locks the database to your specific Google account.
 // Popup is tried first (works on desktop and most mobile browsers); if it's
 // blocked (common in standalone/PWA contexts) we fall back to a redirect flow.
@@ -163,14 +163,20 @@ function doSignIn(){
     signInWithRedirect(auth, provider);
   });
 }
- 
+
 getRedirectResult(auth).catch(function(err){
   console.error("redirect sign-in error", err);
 });
- 
+
 onAuthStateChanged(auth, function(user){
   var signinEl=document.getElementById("signin-screen");
   var appEl=document.getElementById("app");
+  if(user && user.isAnonymous){
+    // Leftover anonymous session from before Google sign-in was added.
+    // Sign it out so the Google sign-in screen actually shows.
+    signOut(auth);
+    return;
+  }
   if(user){
     if(signinEl)signinEl.style.display="none";
     if(appEl)appEl.style.display="";
@@ -193,10 +199,10 @@ onAuthStateChanged(auth, function(user){
     if(appEl)appEl.style.display="none";
   }
 });
- 
+
 var googleBtn=document.getElementById("btn-google");
 if(googleBtn)googleBtn.onclick=doSignIn;
- 
+
 function save(){
   setSyncDot("spin");
   var obj={};
@@ -205,44 +211,44 @@ function save(){
     .then(function(){setSyncDot("ok");setSv("saved");})
     .catch(function(){setSyncDot("err");setSv("save failed");});
 }
- 
+
 function AH(){return HEADS[activeIdx];}
- 
+
 function listFor(h){
   return tasks.filter(function(t){return t.head===h&&!t.done;})
               .sort(function(a,b){return a.order-b.order;});
 }
- 
+
 function nextOrd(h){
   var l=listFor(h),mx=0;
   l.forEach(function(t){if(t.order>mx)mx=t.order;});
   return mx+1;
 }
- 
+
 function fmtDate(iso){
   if(!iso)return"";
   var d=new Date(iso+"T00:00:00");
   return d.toLocaleDateString("en-IN",{day:"numeric",month:"short"});
 }
- 
+
 function isOv(due,done){
   if(!due||done)return false;
   return new Date(due+"T00:00:00")<new Date(new Date().toDateString());
 }
- 
+
 function esc(s){
   return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");
 }
- 
+
 function gcalUrl(t){
   var d=t.due.replace(/-/g,"");
   var dt=new Date(t.due+"T00:00:00");dt.setDate(dt.getDate()+1);
   var d2=dt.toISOString().slice(0,10).replace(/-/g,"");
   return"https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent(t.title)+"&dates="+d+"/"+d2+(t.note?"&details="+encodeURIComponent(t.note):"");
 }
- 
+
 function render(){renderTabs();renderForm();renderList();renderDone();}
- 
+
 function renderTabs(){
   var el=document.getElementById("tabs");if(!el)return;
   var h="";
@@ -258,7 +264,7 @@ function renderTabs(){
     })(i);
   }
 }
- 
+
 function renderForm(){
   var el=document.getElementById("form-area");if(!el)return;
   if(!showForm&&!editId){el.innerHTML="";return;}
@@ -279,7 +285,7 @@ function renderForm(){
     document.getElementById("fs").onclick=doAdd;
   }
 }
- 
+
 function renderList(){
   var el=document.getElementById("task-list");if(!el)return;
   if(!loaded){el.innerHTML='<div class="loading">&#8987; Loading…</div>';return;}
@@ -344,7 +350,7 @@ function renderList(){
       +'</div>'+moveRow+delRow+'</div>';
   }
   el.innerHTML=h;
- 
+
   for(var i=0;i<list.length;i++){
     (function(t,first,last){
       bindId("up-"+t.id,function(){doUp(t.id);});
@@ -371,7 +377,7 @@ function renderList(){
     bindId("es",doSaveEdit);
   }
 }
- 
+
 function renderDone(){
   var done=tasks.filter(function(t){return t.done;})
                 .sort(function(a,b){return new Date(b.doneAt||0)-new Date(a.doneAt||0);});
@@ -398,9 +404,9 @@ function renderDone(){
     });
   }
 }
- 
+
 function bindId(id,fn){var el=document.getElementById(id);if(el)el.onclick=fn;}
- 
+
 function doAdd(){
   var ttl=(document.getElementById("f-ttl")||{}).value;
   if(!ttl||!ttl.trim())return;
@@ -409,7 +415,7 @@ function doAdd(){
   tasks.push({id:Date.now()+"",title:ttl.trim(),due:due,note:note,head:AH(),order:nextOrd(AH()),done:false,doneAt:null,calPushed:false});
   save();showForm=false;render();
 }
- 
+
 function doSaveEdit(){
   var ttl=(document.getElementById("e-ttl")||{}).value;
   if(!ttl||!ttl.trim())return;
@@ -418,13 +424,13 @@ function doSaveEdit(){
   tasks=tasks.map(function(t){return t.id===editId?Object.assign({},t,{title:ttl.trim(),due:due,note:note}):t;});
   save();editId=null;render();
 }
- 
+
 function doDelete(id){
   tasks=tasks.filter(function(t){return t.id!==id;});
   if(deletingId===id)deletingId=null;
   save();render();
 }
- 
+
 function doToggleDone(id){
   tasks=tasks.map(function(t){
     if(t.id!==id)return t;
@@ -432,7 +438,7 @@ function doToggleDone(id){
   });
   save();render();
 }
- 
+
 function doUp(id){
   var list=listFor(AH()),idx=-1;
   for(var i=0;i<list.length;i++){if(list[i].id===id){idx=i;break;}}
@@ -445,7 +451,7 @@ function doUp(id){
   });
   save();render();
 }
- 
+
 function doDown(id){
   var list=listFor(AH()),idx=-1;
   for(var i=0;i<list.length;i++){if(list[i].id===id){idx=i;break;}}
@@ -458,14 +464,14 @@ function doDown(id){
   });
   save();render();
 }
- 
+
 function doMove(id){
   var sel=document.getElementById("msel-"+id);if(!sel)return;
   var dest=HEADS[parseInt(sel.value)];
   tasks=tasks.map(function(t){return t.id===id?Object.assign({},t,{head:dest,order:nextOrd(dest)}):t;});
   save();movingId=null;render();
 }
- 
+
 function doPushCal(id){
   var task=null;
   for(var i=0;i<tasks.length;i++){if(tasks[i].id===id){task=tasks[i];break;}}
@@ -474,11 +480,10 @@ function doPushCal(id){
   tasks=tasks.map(function(t){return t.id===id?Object.assign({},t,{calPushed:true}):t;});
   save();render();
 }
- 
+
 document.getElementById("btn-add").onclick=function(){showForm=true;editId=null;movingId=null;deletingId=null;render();};
 setSyncDot("spin");
 render();
 </script>
 </body>
 </html>
- 
