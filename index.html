@@ -89,15 +89,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 </style>
 </head>
 <body>
-<div class="signin-screen" id="signin-screen" style="display:none">
-  <span class="signin-title">My tasks</span>
-  <span class="signin-sub">Sign in with your Google account to access your tasks.</span>
-  <button class="btn-google" id="btn-google">
-    <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.9c1.7-1.56 2.7-3.86 2.7-6.62z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.9-2.26c-.81.54-1.85.86-3.06.86-2.35 0-4.34-1.59-5.05-3.72H.96v2.33A9 9 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.95 10.7A5.4 5.4 0 0 1 3.67 9c0-.59.1-1.17.28-1.7V4.97H.96A9 9 0 0 0 0 9c0 1.45.35 2.83.96 4.03l2.99-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.51.45 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0A9 9 0 0 0 .96 4.97l2.99 2.33C4.66 5.17 6.65 3.58 9 3.58z"/></svg>
-    Sign in with Google
-  </button>
-</div>
-<div class="wrap" id="app" style="display:none">
+<div class="wrap" id="app">
   <div class="hdr">
     <span class="hdr-title">My tasks</span>
     <div class="hdr-right">
@@ -115,7 +107,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getDatabase, ref, onValue, set, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyChFaA66--31bWlryd_TbxFjml8Tgw5uhs",
@@ -130,7 +122,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
 const tasksRef = ref(db, "tasks");
 
 var HEADS=["Today","Tasks","Think","Learn","Body","Soul"];
@@ -155,32 +146,12 @@ function setSv(msg){
   if(el){el.textContent=msg;if(msg)setTimeout(function(){el.textContent="";},2000);}
 }
 
-// Google Sign-In: locks the database to your specific Google account.
-// Using redirect (not popup) — popups depend on third-party cookies/iframes
-// on the Firebase authDomain, which Chrome blocks in Incognito and
-// increasingly elsewhere, causing Google's "requested action is invalid"
-// error. Redirect navigates the whole page, avoiding that dependency.
-function doSignIn(){
-  signInWithRedirect(auth, provider);
-}
-
-getRedirectResult(auth).catch(function(err){
-  console.error("redirect sign-in error", err);
-});
-
+// Sign in anonymously, then start listening for realtime changes from Firebase.
+// (Reverted from Google Sign-In after persistent "requested action is
+// invalid" OAuth errors we couldn't resolve — restoring known-working access
+// first. Rules stay at auth != null, which anonymous sessions satisfy.)
 onAuthStateChanged(auth, function(user){
-  var signinEl=document.getElementById("signin-screen");
-  var appEl=document.getElementById("app");
-  if(user && user.isAnonymous){
-    // Leftover anonymous session from before Google sign-in was added.
-    // Sign it out so the Google sign-in screen actually shows.
-    signOut(auth);
-    return;
-  }
   if(user){
-    if(signinEl)signinEl.style.display="none";
-    if(appEl)appEl.style.display="";
-    console.log("Signed in. UID:", user.uid, "Email:", user.email);
     if(!listening){
       listening=true;
       onValue(tasksRef, function(snapshot){
@@ -194,14 +165,12 @@ onAuthStateChanged(auth, function(user){
         setSv("sync error");
       });
     }
-  }else{
-    if(signinEl)signinEl.style.display="flex";
-    if(appEl)appEl.style.display="none";
   }
 });
-
-var googleBtn=document.getElementById("btn-google");
-if(googleBtn)googleBtn.onclick=doSignIn;
+signInAnonymously(auth).catch(function(){
+  setSyncDot("err");
+  setSv("auth failed");
+});
 
 function save(){
   setSyncDot("spin");
